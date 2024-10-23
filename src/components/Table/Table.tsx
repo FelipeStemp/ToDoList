@@ -1,9 +1,9 @@
 import { Chip, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
+import { useState } from 'react';
 import { ApiModel } from "../../Interface/Model";
 import ButtonContainer from "../button/ButtonCont";
-import * as S from './styled';
-import { useEffect, useState } from 'react';
 import CardList from '../Modal/cardTarefas/Card';
+import * as S from './styled';
 
 interface dataProps {
     data: ApiModel[];
@@ -31,7 +31,6 @@ function TableList({ data }: dataProps) {
         setPage(0);
     };
     const currentRows = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
     return (
         <S.DivTable>
             <TableContainer sx={{ maxWidth: "90vw", borderRadius: "3px" }}>
@@ -49,61 +48,94 @@ function TableList({ data }: dataProps) {
                     </TableHead>
 
                     <TableBody>
-                        {currentRows.map((lista) => (
-                            <TableRow
-                                key={lista._id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell
-                                    sx={{
-                                        color: "white",
-                                        width: "15vw",
-                                        maxWidth: "15vw",
-                                        whiteSpace: "nowrap",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    {lista.name}
-                                </TableCell>
-                                <TableCell
-                                    sx={{
-                                        color: "white",
-                                        width: "20vw",
-                                        maxWidth: "20vw",
-                                        whiteSpace: "nowrap",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        textAlign: "left",
-                                    }}
-                                >
-                                    {lista.description}
-                                </TableCell>
+                        {currentRows.map((lista) => {
+                            let label;
+                            let backgroundColor;
+                            let borderColor;
 
-                                <TableCell sx={{ color: "white", textAlign: "center" }}>
-                                    <Chip
-                                        label={lista.completed ? 'Concluído' : 'Pendente'}
-                                        sx={{ color: "white", backgroundColor: lista.completed ? 'rgba(0, 255, 0, 0.1)' : 'rgba(175, 3, 0, 0.3)', 
-                                                border: lista.completed ? ' 2px solid #00FF00' : '2px solid #AF0300' 
+                            switch (lista.completed) {
+                                case 0:
+                                    label = 'Pendente';
+                                    backgroundColor = 'rgba(175, 3, 0, 0.3)';
+                                    borderColor = '#AF0300';
+                                    break;
+                                case 1:
+                                    label = 'Fazendo';
+                                    backgroundColor = 'rgba(255, 255, 0, 0.2)';
+                                    borderColor = 'yellow';
+                                    break;
+                                case 2:
+                                    label = 'Concluído';
+                                    backgroundColor = 'rgba(0, 255, 0, 0.1)';
+                                    borderColor = '#00FF00';
+                                    break;
+                                default:
+                                    label = 'Indefinido';
+                                    backgroundColor = 'gray';
+                                    borderColor = 'gray';
+                                    break;
+                            }
+
+                            return (
+                                <TableRow
+                                    key={lista._id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell
+                                        sx={{
+                                            color: "white",
+                                            width: "15vw",
+                                            maxWidth: "15vw",
+                                            whiteSpace: "nowrap",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            textAlign: "left",
+                                        }}
+                                    >
+                                        {lista.name}
+                                    </TableCell>
+                                    <TableCell
+                                        sx={{
+                                            color: "white",
+                                            width: "20vw",
+                                            maxWidth: "20vw",
+                                            whiteSpace: "nowrap",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            textAlign: "left",
+                                        }}
+                                    >
+                                        {lista.description}
+                                    </TableCell>
+
+                                    <TableCell sx={{ color: "white", textAlign: "center" }}>
+                                        <Chip
+                                            label={label}
+                                            sx={{
+                                                color: "white",
+                                                backgroundColor: backgroundColor,
+                                                border: `2px solid ${borderColor}`,
                                             }}
-                                        variant={lista.completed ? 'outlined' : 'filled'}
-                                        size="small"
-                                    />
-                                </TableCell>
+                                            variant={lista.completed ? 'outlined' : 'filled'}
+                                            size="small"
+                                        />
+                                    </TableCell>
 
-                                <TableCell sx={{ display: "flex" }}>
-                                    <ButtonContainer id={lista._id} colorS="primary" variant="contained"
-                                        click={() => handleOpenModal(lista._id || "")} 
-                                        children="Abrir" 
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                    <TableCell sx={{ display: "flex" }}>
+                                        <ButtonContainer
+                                            id={lista._id}
+                                            colorS="primary"
+                                            variant="contained"
+                                            click={() => handleOpenModal(lista._id || "")}
+                                            children="Abrir"
+                                        />
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
-
                 </Table>
-                <TablePagination sx={{ color: "White", display: 'flex', justifyContent: 'start', marginX: 0}}
+                <TablePagination sx={{ color: "White", display: 'flex', justifyContent: 'start', marginX: 0 }}
                     rowsPerPageOptions={[3, 5, 7]}
                     component="div"
                     count={data.length}

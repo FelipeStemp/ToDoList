@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Alert, Box, CircularProgress, Modal, Switch, TextField } from '@mui/material';
+import { Alert, CircularProgress, FormControl, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
 import { ApiModel } from '../../../Interface/Model';
 
-import { useEffect, useState } from 'react';
-import ButtonContainer from '../../button/ButtonCont';
 import CloseIcon from '@mui/icons-material/Close';
-import * as S from './styled';
+import { useEffect, useState } from 'react';
 import { fetchData } from '../../../methods/fetch';
+import ButtonContainer from '../../button/ButtonCont';
+import * as S from './styled';
 
 interface dataProps {
   id?: string,
@@ -22,13 +22,15 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
   const [alertaText, setAlertaTxt] = useState("")
   const [loading, setLoading] = useState<boolean>(false)
 
-  const [isComplete, setCompleto] = useState(data.completed);
+  const [status, setStatus] = useState<number | undefined>(data.completed || 0);
   const [nome, setNome] = useState(data.name);
   const [desc, setDesc] = useState(data.description);
 
   useEffect(() => {
     setLoading(true)
-    setCompleto(data.completed);
+    if (data.completed !== undefined) {
+      setStatus(data.completed);
+    }
     setNome(data.name);
     setDesc(data.description);
     setLoading(false)
@@ -38,7 +40,7 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
     setData({} as ApiModel);
     setNome("");
     setDesc("");
-    setCompleto(false);
+    setStatus(0);
     setError(false);
     setSucess(false);
     setAlertaTxt("");
@@ -59,7 +61,6 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
     handleClose();
   }
 
-
   const handleError = (message: string) => {
     setError(true);
     setAlertaTxt(message)
@@ -71,7 +72,7 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
   useEffect(() => {
     if (id) {
       setLoading(true)
-      fetch(`https://api-to-do-list-lu3m.onrender.com/id/${id}`, {
+      fetch(`https://api-todolist-eqx8.onrender.com/id/${id}`, {
         method: 'GET',
         mode: 'cors',
       })
@@ -101,8 +102,8 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
       <Modal open={open} style={{ width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <S.DivCard>
           <S.HeaderDiv>
-              <h1 style={{position: 'absolute', top: '5px'}}>Criar tarefa</h1>
-              <CloseIcon fontSize='large'onClick={handleCloseModal} sx={{position: 'absolute', top: '10px', right: '10px'}}/>
+            <h1 style={{ position: 'absolute', top: '5px' }}>Criar tarefa</h1>
+            <CloseIcon fontSize='large' onClick={handleCloseModal} sx={{ position: 'absolute', top: '10px', right: '10px' }} />
           </S.HeaderDiv>
           <TextField
             label="Título"
@@ -111,10 +112,12 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
             value={nome}
 
             InputProps={{
-              sx: { color: 'white', margin: "2vw 0px", textAlign: "center", '& input:-webkit-autofill': {
-                                WebkitTextFillColor: 'white', // Cor do texto preenchido automaticamente
-                                transition: 'background-color 5000s ease-in-out 0s',
-                            }, },
+              sx: {
+                color: 'white', margin: "2vw 0px", textAlign: "center", '& input:-webkit-autofill': {
+                  WebkitTextFillColor: 'white',
+                  transition: 'background-color 5000s ease-in-out 0s',
+                },
+              },
             }}
 
             InputLabelProps={{
@@ -133,29 +136,43 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
             variant='standard'
             onChange={(e) => setDesc(e.target.value)}
             InputProps={{
-              sx: { color: 'white', margin: "2vw 0px", '& input:-webkit-autofill': {
-                                WebkitTextFillColor: 'white', // Cor do texto preenchido automaticamente
-                                transition: 'background-color 5000s ease-in-out 0s',
-                            }, },
+              sx: {
+                color: 'white', margin: "2vw 0px", '& input:-webkit-autofill': {
+                  WebkitTextFillColor: 'white', // Cor do texto preenchido automaticamente
+                  transition: 'background-color 5000s ease-in-out 0s',
+                },
+              },
             }}
             InputLabelProps={{
               sx: { color: 'white' },
             }}
           />
 
-          <label>Completo</label>
-          <Switch disabled={ativo} checked={isComplete} onChange={() => setCompleto(!isComplete)} />
+          <FormControl disabled={ativo} >
+            <FormLabel sx={{ color: 'white' }}>Status</FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              onChange={(e) => setStatus(Number(e.target.value))}
+              value={status}
+            >
+              <FormControlLabel value={0} control={<Radio sx={{ color: 'white' }} />} label="Pendente" />
+              <FormControlLabel value={1} control={<Radio sx={{ color: 'white' }} />} label="Fazendo" />
+              <FormControlLabel value={2} control={<Radio sx={{ color: 'white' }} />} label="Concluído" />
+            </RadioGroup>
+          </FormControl>
 
           <S.DivBtn>
             <ButtonContainer variant='contained'
-              data={{ _id: "", name: nome, description: desc, completed: isComplete }}
+              data={{ _id: "", name: nome, description: desc, completed: status }}
               action='criar' children='Criar' desabilitar={!ativo} colorS='success'
               onSuccess={() => handleSuccess("Criado com sucesso")}
               onError={() => handleError("Erro ao criar, insira todos os dados obrigatorios")}
             />
 
             <ButtonContainer id={data._id} variant='contained'
-              data={{ _id: data._id, name: nome, description: desc, completed: isComplete }}
+              data={{ _id: data._id, name: nome, description: desc, completed: status }}
               action="Edit" children="Salvar" desabilitar={ativo}
               onSuccess={() => handleSuccess("Atualizado com sucesso")}
               onError={() => handleError("Erro ao atualizar, insira todos os dados obrigatorios")}

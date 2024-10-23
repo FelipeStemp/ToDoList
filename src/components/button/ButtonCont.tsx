@@ -1,7 +1,5 @@
 import { Button } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
 import { ApiModel } from "../../Interface/Model";
-import { useState } from "react";
 
 interface props {
   id?: string,
@@ -13,7 +11,7 @@ interface props {
   desabilitar?: boolean,
   onSuccess?: (message: string) => void;
   onError?: (message: string) => void;
-  click?: () => void ;
+  click?: () => void;
 }
 function ButtonContainer({ id = '', action = '', children = '', data, colorS, variant, desabilitar, onError, onSuccess, click }: props) {
   const handleCriar = (dataCriar: ApiModel) => {
@@ -23,7 +21,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       return;
 
     } else {
-      fetch("https://api-to-do-list-lu3m.onrender.com/createitem", {
+      fetch("https://api-todolist-eqx8.onrender.com/createitem", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,13 +35,11 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
           throw new Error("Erro ao Criar")
         }
         return response.json();
-      }).then(data => {
-        if (onSuccess) onSuccess('');
       }).catch(error => {
         console.log('Error: ', error);
         if (onError) onError('');
       });
-      
+
     }
   }
 
@@ -54,7 +50,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       return;
 
     } else {
-      fetch(`https://api-to-do-list-lu3m.onrender.com/updateByID/${dataAtt._id}`, {
+      fetch(`https://api-todolist-eqx8.onrender.com/updateByID/${dataAtt._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +79,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
   };
 
   const handleDeleter = (id_coleted: string) => {
-    fetch('https://api-to-do-list-lu3m.onrender.com/delete', {
+    fetch('https://api-todolist-eqx8.onrender.com/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +123,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
     }
   }
 
-  
+
   return (
     <Button sx={{ margin: "10px" }}
       size="small"

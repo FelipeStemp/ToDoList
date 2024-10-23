@@ -1,8 +1,8 @@
-import * as S from './styled';
+import { useState } from 'react';
 import CardTarefa from '../../components/CardTarefa/CardTarefa';
 import { ApiModel } from '../../Interface/Model';
-import { useState } from 'react';
 import CardList from '../Modal/cardTarefas/Card';
+import * as S from './styled';
 
 interface conteudo {
     data: ApiModel[];
@@ -11,8 +11,9 @@ interface conteudo {
 function ListaTarefas({ data }: conteudo) {
     const [openModal, setOpenModal] = useState(false)
     const [idSelected, setIdSelected] = useState<string | null>()
-    const filterPendente = data.filter((item) => item.completed == false)
-    const filterComplete = data.filter((item) => item.completed == true)
+    const filtroNovo = data.filter((item) => item.completed == 0)
+    const filterPFazendo = data.filter((item) => item.completed == 1)
+    const filterComplete = data.filter((item) => item.completed == 2)
 
     const handleOpenModal = (id: string) => {
         setIdSelected(id)
@@ -28,7 +29,7 @@ function ListaTarefas({ data }: conteudo) {
             <S.ConteudosBody>
                 <S.Titulo>Pendente</S.Titulo>
                 <S.CardsDiv>
-                    {filterPendente.map((tarefas) => (
+                    {filtroNovo.map((tarefas) => (
                         <CardTarefa
                             key={tarefas._id}
                             name={tarefas.name}
@@ -46,7 +47,7 @@ function ListaTarefas({ data }: conteudo) {
             <S.ConteudosBody>
                 <S.Titulo>Fazendo</S.Titulo>
                 <S.CardsDiv>
-                    {filterComplete.map((tarefas) => (
+                    {filterPFazendo.map((tarefas) => (
                         <CardTarefa
                             key={tarefas._id}
                             name={tarefas.name}
@@ -82,7 +83,7 @@ function ListaTarefas({ data }: conteudo) {
                     id={idSelected}
                     ativo={false}
                     open={openModal}
-                    handleClose={handleCloseModal}          
+                    handleClose={handleCloseModal}
                 />
             }
         </S.ListaBody>
