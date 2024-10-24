@@ -28,17 +28,21 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       if (onError) onError('Insira os dados')
       return;
 
-    } else {
+    } if (!user) {
+      if (onError) onError('Usuário não encontrado');
+      return;
+    }
+    else {
       setLoading(true)
-      fetch("https://api-to-do-list-lu3m.onrender.com/createitem", {
+      fetch("https://api-todolist-eqx8.onrender.com/createitem", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: user._id,
           name: dataCriar.name,
           description: dataCriar.description,
+          userId: user._id
         }),
       }).then((response) => {
         if (!response.ok) {
@@ -65,7 +69,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
 
     } else {
       setLoading(true)
-      fetch(`https://api-to-do-list-lu3m.onrender.com/updateByID/${dataAtt._id}`, {
+      fetch(`https://api-todolist-eqx8.onrender.com/updateByID/${dataAtt._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +102,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
 
   const handleDeleter = (id_coleted: string) => {
     setLoading(true)
-    fetch('https://api-to-do-list-lu3m.onrender.com/delete', {
+    fetch('https://api-todolist-eqx8.onrender.com/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -122,9 +126,6 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       })
   }
 
-
-
-
   const handleAction = (action: string) => {
     switch (action) {
       case "delete":
@@ -146,8 +147,6 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
         break;
     }
   }
-
-
   return (
     <Button sx={{ margin: "10px" }}
       size="small"
@@ -158,7 +157,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       onClick={click}
       onClickCapture={() => handleAction(action)}
     >
-      {loading ? <CircularProgress color="inherit" size={24}/> : children}
+      {loading ? <CircularProgress color="inherit" size={24} /> : children}
     </Button>
   )
 }
