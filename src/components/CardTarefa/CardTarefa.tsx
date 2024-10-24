@@ -1,25 +1,51 @@
-import { CardActionArea, Chip, } from '@mui/material'
-import * as S from './styled'
-import { ApiModel } from '../../Interface/Model'
-import { useState } from 'react';
-import CardList from '../Modal/cardTarefas/Card';
+import { CardActionArea, Chip, } from '@mui/material';
+import { ApiModel } from '../../Interface/Model';
+import * as S from './styled';
 
-interface props extends ApiModel{
+interface props extends ApiModel {
     click: () => void;
 }
 
-function CardTarefa({ name, description, _id, completed, click }: props) {
+function CardTarefa({ name, completed, click }: props) {
+    let label;
+    let backgroundColor;
+    let borderColor;
+
+    switch (completed) {
+        case 0:
+            label = 'Pendente';
+            backgroundColor = 'rgba(175, 3, 0, 0.5)';
+            borderColor = '#AF0300';
+            break;
+        case 1:
+            label = 'Fazendo';
+            backgroundColor = 'rgba(255, 255, 0, 0.5)';
+            borderColor = 'yellow';
+            break;
+        case 2:
+            label = 'Concluído';
+            backgroundColor = 'rgba(0, 255, 0, 0.5)';
+            borderColor = '#00FF00';
+            break;
+        default:
+            label = 'Indefinido';
+            backgroundColor = 'gray';
+            borderColor = 'gray';
+            break;
+    }
+
     return (
 
-        <CardActionArea sx={{width: 'fit-content', height: 'fit-content'}} onClick={click} >
+        <CardActionArea sx={{ width: 'fit-content', height: 'fit-content' }} onClick={click} >
             <S.BodyCard>
                 <Chip
-                    label={completed ? 'Concluído' : 'Pendente'}
+                    label={label}
                     className="Chip"
                     sx={{
-                        color: "white", backgroundColor: completed ? 'rgba(0, 255, 0, 0.2)' : 'rgba(175, 3, 0, 0.5)',                        
+                        color: "white",
+                        backgroundColor: backgroundColor,
+                        border: `2px solid ${borderColor}`,
                     }}
-                    variant={completed ? 'outlined' : 'filled'}
                     size="small"
                 />
 
@@ -29,7 +55,7 @@ function CardTarefa({ name, description, _id, completed, click }: props) {
 
             </S.BodyCard>
 
-            
+
         </CardActionArea>
 
     )

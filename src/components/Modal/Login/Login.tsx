@@ -49,6 +49,8 @@ function LoginModal({ open, handleClose }: props) {
             <S.BodyLogin>
                 <CloseIcon fontSize='large' onClick={handleClose} sx={{ position: 'absolute', top: '10px', right: '10px' }} />
                 <h1 style={{ position: 'absolute', top: '30px' }}>LOGIN</h1>
+                <CloseIcon fontSize='large' onClick={handleClose} sx={{ position: 'absolute', top: '10px', right: '10px' }} />
+                <h1 style={{ position: 'absolute', top: '30px' }}>LOGIN</h1>
                 <S.FormLogin>
                     <TextField type='email' label="E-mail" focused
                         onChange={(e) => setEmail(e.target.value)}
