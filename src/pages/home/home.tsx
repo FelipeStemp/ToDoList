@@ -26,8 +26,6 @@ function Home() {
   const userData = localStorage.getItem('userData');
   const user = userData ? JSON.parse(userData) : null;
 
-  console.log(user._id);
-
   const handleOpenModalCriar = () => setIsModalOpenCriar(true);
   const handleCloseModalCriar = () => { setIsModalOpenCriar(false) }
   const toggleComponent = (mostrar: boolean) => setShowComponente(mostrar);

@@ -36,7 +36,6 @@ function LoginModal({ open, handleClose }: props) {
             }
             return response.json();
         }).then((data)=>{
-            console.log("data:", data)
             localStorage.setItem('userData', JSON.stringify(data));
             navigate('/Tarefas')
         }).catch(error => {
