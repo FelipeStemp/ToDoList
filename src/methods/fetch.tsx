@@ -11,7 +11,6 @@ export const fetchData = (): Promise<ApiModel[]> => {
       }
       return response.json();  // Retorna os dados
     })
-<<<<<<< HEAD
       .then((response) => {
         if (!response.ok) {
           throw new Error('Erro ao buscar atividades');
@@ -23,11 +22,3 @@ export const fetchData = (): Promise<ApiModel[]> => {
       });
   };
 
-
-  
-=======
-    .catch((error) => {
-      throw error;  // Lança o erro para ser capturado no .catch()
-    });
-};
->>>>>>> 5c94c0aa844738b056405608ce2eee4a9daf1091

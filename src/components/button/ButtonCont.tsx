@@ -1,7 +1,8 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import { ApiModel } from "../../Interface/Model";
 import { useState } from "react";
+import { IUser } from "../../Interface/UserModel";
 
 interface props {
   id?: string,
@@ -25,6 +26,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       return;
 
     } else {
+      setLoading(true)
       fetch("https://api-to-do-list-lu3m.onrender.com/createitem", {
         method: 'POST',
         headers: {
@@ -58,6 +60,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       return;
 
     } else {
+      setLoading(true)
       fetch(`https://api-to-do-list-lu3m.onrender.com/updateByID/${dataAtt._id}`, {
         method: 'PUT',
         headers: {
@@ -90,6 +93,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
   };
 
   const handleDeleter = (id_coleted: string) => {
+    setLoading(true)
     fetch('https://api-to-do-list-lu3m.onrender.com/delete', {
       method: 'DELETE',
       headers: {
