@@ -10,6 +10,8 @@ function InicioPage() {
     const [openModalLogin, setOpenModalLogin] = useState(false)
     const [openModalCadastro, setOpenModalCadastro] = useState(false)
 
+    localStorage.removeItem('userData');
+
     const handleOpenLogin = () => { setOpenModalLogin(true) }
     const handleCloseLogin = () => { setOpenModalLogin(false) }
 
@@ -17,6 +19,7 @@ function InicioPage() {
     const handleCloseCadastro = () => { setOpenModalCadastro(false)}
 
     return (
+
         <S.BodyLogin>
             <Header justify="center">
                 <ButtonGroup sx={{ width: '200px', position: 'absolute', right:'10px' }}>
