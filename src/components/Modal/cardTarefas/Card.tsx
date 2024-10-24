@@ -25,6 +25,8 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
   const [status, setStatus] = useState<number | undefined>(data.completed || 0);
   const [nome, setNome] = useState(data.name);
   const [desc, setDesc] = useState(data.description);
+  const userData = localStorage.getItem('userData');
+  const user = userData ? JSON.parse(userData) : null;
 
   useEffect(() => {
     setLoading(true)
@@ -52,7 +54,7 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
     setTimeout(() => {
       resetData();
       handleClose();
-      fetchData();
+      fetchData(user._id);
     }, 1300);
   };
 

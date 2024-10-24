@@ -34,9 +34,11 @@ function LoginModal({ open, handleClose }: props) {
             if (!response.ok) {
                 throw new Error("Erro ao cadastrar")
             }
-            setLoading(false)
+            return response.json();
+        }).then((data)=>{
+            console.log("data:", data)
+            localStorage.setItem('userData', JSON.stringify(data));
             navigate('/Tarefas')
-            return response.status
         }).catch(error => {
             console.log('Error:', error)
             setLoading(false)

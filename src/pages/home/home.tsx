@@ -23,6 +23,10 @@ function Home() {
   })
   const [firstAcess, setFirst] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
+  const userData = localStorage.getItem('userData');
+  const user = userData ? JSON.parse(userData) : null;
+
+  console.log(user._id);
 
   const handleOpenModalCriar = () => setIsModalOpenCriar(true);
   const handleCloseModalCriar = () => { setIsModalOpenCriar(false) }
@@ -34,7 +38,7 @@ function Home() {
 
   useEffect(() => {
     setLoading(true)
-    fetchData()
+    fetchData(user._id)
       .then((data: ApiModel[]) =>
         setData(data))
       .catch((error: string) =>

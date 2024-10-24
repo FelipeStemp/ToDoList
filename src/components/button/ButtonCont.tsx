@@ -9,7 +9,6 @@ interface props {
   action?: string,
   children?: React.ReactNode,
   data?: ApiModel,
-  user?: IUser,
   colorS?: 'primary' | 'error' | 'success';
   variant?: 'contained' | 'outlined';
   desabilitar?: boolean,
@@ -17,8 +16,12 @@ interface props {
   onError?: (message: string) => void;
   click?: () => void;
 }
-function ButtonContainer({ id = '', action = '', children = '', data, colorS, variant, desabilitar, user, onError, onSuccess, click }: props) {
+function ButtonContainer({ id = '', action = '', children = '', data, colorS, variant, desabilitar, onError, onSuccess, click }: props) {
   const [loading, setLoading] = useState(false)
+
+  const userData = localStorage.getItem('userData');
+  const user = userData ? JSON.parse(userData) : null;
+
   const handleCriar = (dataCriar: ApiModel) => {
 
     if (!dataCriar.description?.trim() || !dataCriar.name?.trim()) {
@@ -33,6 +36,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          userId: user._id,
           name: dataCriar.name,
           description: dataCriar.description,
         }),
