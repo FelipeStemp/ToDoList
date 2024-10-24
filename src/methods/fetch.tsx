@@ -15,3 +15,6 @@ export const fetchData = (): Promise<ApiModel[]> => {
         throw error;  // Lança o erro para ser capturado no .catch()
       });
   };
+
+
+  

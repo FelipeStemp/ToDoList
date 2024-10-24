@@ -90,7 +90,7 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
     }
   }, []);
 
-  if (loading == true) {
+  if (loading === true) {
     return (
       <Modal open={open} style={{ width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <CircularProgress />
