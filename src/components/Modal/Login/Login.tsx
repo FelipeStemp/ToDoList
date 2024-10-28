@@ -1,4 +1,4 @@
-import { CircularProgress, colors, Modal, TextField } from '@mui/material'
+import { CircularProgress, Modal, TextField } from '@mui/material'
 import * as S from './styled'
 import ButtonContainer from '../../button/ButtonCont'
 import CloseIcon from '@mui/icons-material/Close';

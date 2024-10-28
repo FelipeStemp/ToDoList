@@ -1,6 +1,7 @@
 import { ApiModel } from "../Interface/Model";
 
 const token = sessionStorage.getItem('token'); 
+console.log(token)
 
 export const fetchData = (id: string): Promise<ApiModel[]> => {
   if (!token) {

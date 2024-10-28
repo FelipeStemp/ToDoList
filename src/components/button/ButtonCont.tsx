@@ -1,8 +1,6 @@
 import { Button, CircularProgress } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
 import { ApiModel } from "../../Interface/Model";
 import { useState } from "react";
-import { IUser } from "../../Interface/UserModel";
 
 interface props {
   id?: string,
@@ -20,8 +18,7 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
   const [loading, setLoading] = useState(false)
 
   const token = sessionStorage.getItem('token'); 
-  const userData = sessionStorage.getItem('userId');
-  const user = userData ? JSON.parse(userData) : null;
+  const user = sessionStorage.getItem('userId') || '';
 
   const handleCriar = (dataCriar: ApiModel) => {
 

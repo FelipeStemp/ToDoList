@@ -21,8 +21,7 @@ function Home() {
     return valueSelected === 'true'
   })
   const [isMobile, setIsMobile] = useState(false)
-  const userData = sessionStorage.getItem('userId');
-  const user = userData ? JSON.parse(userData) : null;
+  const user =sessionStorage.getItem('userId') || '';
 
   const handleOpenModalCriar = () => setIsModalOpenCriar(true);
   const handleCloseModalCriar = () => { setIsModalOpenCriar(false) }
