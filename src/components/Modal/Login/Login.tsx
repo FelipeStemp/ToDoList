@@ -36,9 +36,8 @@ function LoginModal({ open, handleClose }: props) {
             }
             return response.json();
         }).then((data)=>{
-            sessionStorage.setItem('token', JSON.stringify(data.token));
-            console.log(data.token)
-            sessionStorage.setItem('userId', JSON.stringify(data.userId));
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('userId', data.userId);
             navigate('/Tarefas')
         }).catch(error => {
             console.log('Error:', error)
