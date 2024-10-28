@@ -2,7 +2,6 @@ import { ApiModel } from "../Interface/Model";
 
 export const fetchData = (id: string): Promise<ApiModel[]> => {
   const token = sessionStorage.getItem('token');
-  console.log('Token recuperado:', token); // Log para verificar o token
 
   if (!token) {
     return Promise.reject(new Error("Token não encontrado. O usuário pode não estar autenticado."));

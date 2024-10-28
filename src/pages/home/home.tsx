@@ -21,7 +21,7 @@ function Home() {
     return valueSelected === 'true'
   })
   const [isMobile, setIsMobile] = useState(false)
-  const user =sessionStorage.getItem('userId') || '';
+  const user =sessionStorage.getItem('userId');
 
   const handleOpenModalCriar = () => setIsModalOpenCriar(true);
   const handleCloseModalCriar = () => { setIsModalOpenCriar(false) }
@@ -33,11 +33,13 @@ function Home() {
 
   useEffect(() => {
     setLoading(true)
-    fetchData(user)
+    if(user){
+      fetchData(user)
       .then((data: ApiModel[]) =>
         setData(data))
       .catch((error: string) =>
         console.log(error));
+    }
     setLoading(false)
   },[])
 

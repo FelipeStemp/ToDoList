@@ -25,8 +25,8 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
   const [status, setStatus] = useState<number | undefined>(data.completed || 0);
   const [nome, setNome] = useState(data.name);
   const [desc, setDesc] = useState(data.description);
-  const userData = sessionStorage.getItem('userData');
-  const user = userData ? JSON.parse(userData) : null;
+  const user =sessionStorage.getItem('userId');
+  const token = sessionStorage.getItem('token');
 
   useEffect(() => {
     setLoading(true)
@@ -54,7 +54,9 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
     setTimeout(() => {
       resetData();
       handleClose();
-      fetchData(user);
+      if(user){
+        fetchData(user);
+      }
     }, 1300);
   };
 
@@ -77,6 +79,10 @@ function CardList({ id, ativo, open, handleClose }: dataProps) {
       fetch(`https://api-todolist-eqx8.onrender.com/id/${id}`, {
         method: 'GET',
         mode: 'cors',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
       })
         .then((response) => {
           if (!response.ok) {
