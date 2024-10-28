@@ -1,9 +1,9 @@
 import { ApiModel } from "../Interface/Model";
 
-const token = sessionStorage.getItem('token'); 
-console.log(token)
-
 export const fetchData = (id: string): Promise<ApiModel[]> => {
+  const token = sessionStorage.getItem('token');
+  console.log('Token recuperado:', token); // Log para verificar o token
+
   if (!token) {
     return Promise.reject(new Error("Token não encontrado. O usuário pode não estar autenticado."));
   }
@@ -18,11 +18,12 @@ export const fetchData = (id: string): Promise<ApiModel[]> => {
   })
   .then((response) => {
     if (!response.ok) {
-      throw new Error('Erro ao buscar atividades');
+      throw new Error('Erro ao buscar atividades: ' + response.statusText); 
     }
     return response.json();  
   })
   .catch((error) => {
+    console.error('Erro na requisição:', error); 
     throw error; 
   });
 };
