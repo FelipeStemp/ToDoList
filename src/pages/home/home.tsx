@@ -14,16 +14,14 @@ import CelPage from '../celularPage/celular';
 
 function Home() {
   const [data, setData] = useState<ApiModel[]>([]);
-  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(true)
   const [isModalOpenCriar, setIsModalOpenCriar] = useState(false);
   const [showComponent, setShowComponente] = useState(() => {
     const valueSelected = localStorage.getItem('showComponent');
     return valueSelected === 'true'
   })
-  const [firstAcess, setFirst] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
-  const userData = localStorage.getItem('userData');
+  const userData = sessionStorage.getItem('userId');
   const user = userData ? JSON.parse(userData) : null;
 
   const handleOpenModalCriar = () => setIsModalOpenCriar(true);
@@ -36,14 +34,13 @@ function Home() {
 
   useEffect(() => {
     setLoading(true)
-    fetchData(user._id)
+    fetchData(user)
       .then((data: ApiModel[]) =>
         setData(data))
       .catch((error: string) =>
         console.log(error));
-    setFirst(false);
     setLoading(false)
-  })
+  },[])
 
   useEffect(() => {
     const handleResize = () => {

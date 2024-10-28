@@ -19,7 +19,8 @@ interface props {
 function ButtonContainer({ id = '', action = '', children = '', data, colorS, variant, desabilitar, onError, onSuccess, click }: props) {
   const [loading, setLoading] = useState(false)
 
-  const userData = localStorage.getItem('userData');
+  const token = sessionStorage.getItem('token'); 
+  const userData = sessionStorage.getItem('userId');
   const user = userData ? JSON.parse(userData) : null;
 
   const handleCriar = (dataCriar: ApiModel) => {
@@ -37,12 +38,13 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       fetch("https://api-todolist-eqx8.onrender.com/createitem", {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           name: dataCriar.name,
           description: dataCriar.description,
-          userId: user._id
+          userId: user
         }),
       }).then((response) => {
         if (!response.ok) {
@@ -72,7 +74,8 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
       fetch(`https://api-todolist-eqx8.onrender.com/updateByID/${dataAtt._id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           completed: dataAtt.completed,
@@ -105,7 +108,8 @@ function ButtonContainer({ id = '', action = '', children = '', data, colorS, va
     fetch('https://api-todolist-eqx8.onrender.com/delete', {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         id: id_coleted,

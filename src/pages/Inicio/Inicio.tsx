@@ -10,8 +10,6 @@ function InicioPage() {
     const [openModalLogin, setOpenModalLogin] = useState(false)
     const [openModalCadastro, setOpenModalCadastro] = useState(false)
 
-    localStorage.removeItem('userData');
-
     const handleOpenLogin = () => { setOpenModalLogin(true) }
     const handleCloseLogin = () => { setOpenModalLogin(false) }
 
